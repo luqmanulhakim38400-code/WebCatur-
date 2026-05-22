@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Master - Final Bot</title>
+    <title>Chess Master - Final</title>
+    <!-- Gunakan HTTPS untuk semua resource -->
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
     <style>
         :root { --bg: #1e1e1e; --panel: #2d2d2d; --accent: #4caf50; --danger: #f44336; }
         body { margin: 0; background: var(--bg); color: #fff; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         #game-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        #myBoard { width: 90vw; max-width: 400px; }
+        /* Papan harus punya ukuran tetap agar tidak hilang */
+        #myBoard { width: 90vw; max-width: 400px; height: 90vw; max-height: 400px; }
         
-        /* Penanda & Ikon */
-        .hint-dot { width: 25%; height: 25%; background: rgba(0,0,0,0.4); border-radius: 50%; position: absolute; top: 37.5%; left: 37.5%; z-index: 999; }
-        .move-icon { position: absolute; top: 2px; right: 2px; font-size: 14px; font-weight: bold; color: yellow; z-index: 1000; text-shadow: 1px 1px 2px #000; }
+        .hint-dot { width: 20%; height: 20%; background: rgba(255, 255, 0, 0.6); border-radius: 50%; position: absolute; top: 40%; left: 40%; z-index: 999; }
+        .move-icon { position: absolute; top: 2px; right: 2px; font-size: 14px; font-weight: bold; color: yellow; z-index: 1000; }
         .in-check { background-color: var(--danger) !important; }
-        
         nav { height: 70px; background: var(--panel); display: flex; justify-content: space-around; align-items: center; padding: 5px; border-top: 2px solid #3d3d3d; }
         .nav-btn { background: #3d3d3d; border: none; color: white; padding: 10px; border-radius: 8px; font-size: 10px; width: 22%; cursor: pointer; }
-        .nav-btn.active { background: var(--accent); }
+        .active { background: var(--accent); }
     </style>
 </head>
 <body>
@@ -42,6 +42,7 @@
     <script>
         var game = new Chess();
         var isAnalisisOn = false;
+        // Pindahkan URL stockfish ke CDN yang stabil
         var stockfish = new Worker('https://cdn.jsdelivr.net/npm/stockfish.js@10.0.2/stockfish.js');
 
         function toggleAnalysis() {
@@ -63,9 +64,7 @@
             board.position(game.fen());
 
             if (isAnalisisOn) {
-                // Simulasi Analisis Sederhana
-                let label = Math.random() > 0.5 ? '!!' : '▲';
-                $('.square-' + target).append('<div class="move-icon">' + label + '</div>');
+                $('.square-' + target).append('<div class="move-icon">▲</div>');
             }
 
             setTimeout(function() {
@@ -87,6 +86,7 @@
             position: 'start',
             onDragStart: function(s, p) { showHints(s); },
             onDrop: onDrop,
+            // PATH ABSOLUT HTTPS AGAR TIDAK DIBLOKIR GITHUB
             pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png',
             snapSpeed: 0, moveSpeed: 0
         });
